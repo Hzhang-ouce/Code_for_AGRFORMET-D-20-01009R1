@@ -1,16 +1,11 @@
 function [bianl,QCData,TA,NEE,SWC,numQC0,rateQC0] = DataLoadQCFilter(FileName)
-% 为方便后面的计算
-% 避免修改所有的函数和脚本文件
-% 此函数输出的土壤温度标记为TA
-% 故后续所有运算中的TA均指土壤温度
-
 %%  数据导入
-% FileName = 'H:\Test_Data\CA-NS1.2004_FULLSET_HH.xls';
+% FileName = 'G:\新建文件夹\学习\CarbonRecycle\AU\AU-ASM.2010_FULLSET_HH.xls';
 % 导入数据
 [data, txt,~] = xlsread(FileName);
 
 % 需要的变量
-bianl = {'TS_F_MDS_1','P_F','SWC_F_MDS_1','NIGHT','NEE_CUT_MEAN','NEE_CUT_MEAN_QC'}; 
+bianl = {'TA_F','P_F','SWC_F_MDS_1','NIGHT','NEE_CUT_MEAN','NEE_CUT_MEAN_QC'};
 
 for ii = 1:4
     a = strcmp(txt(1,:),bianl{ii});          % 找出需要的列变量
@@ -90,13 +85,13 @@ else
         fprintf('HAVE NO PF DATA!!!\r\n');
     else
         a = find(PFTime == 0);
-        TA.PF.no.data = TS_F_MDS_1(a);
+        TA.PF.no.data = TA_F(a);
         NEE.PF.no.data = NEE_CUT_MEAN(a);
         TA.PF.no.num = a;
         NEE.PF.no.num = a;
         
         b = find(PFTime ==1);
-        TA.PF.yes.data = TS_F_MDS_1(b);
+        TA.PF.yes.data = TA_F(b);
         NEE.PF.yes.data = NEE_CUT_MEAN(b);
         TA.PF.yes.num = b;
         NEE.PF.yes.num = b;
@@ -107,14 +102,14 @@ else
         fprintf('Have No Night Data!!\r\n');
     else
         a = find(NIGHT == 0);
-        TA.NT.no.data = TS_F_MDS_1(a);
+        TA.NT.no.data = TA_F(a);
         NEE.NT.no.data = NEE_CUT_MEAN(a);
         SWC.NT.no.data = SWC_F_MDS_1(a);
         TA.NT.no.num = a;
         NEE.NT.no.num = a;
         SWC.NT.no.num = a;
         b = find(NIGHT == 1);
-        TA.NT.yes.data = TS_F_MDS_1(b);
+        TA.NT.yes.data = TA_F(b);
         TA.NT.yes.num = b;
         SWC.NT.yes.data = SWC_F_MDS_1(b);
         SWC.NT.yes.num = b;
@@ -128,10 +123,10 @@ else
     
     %%  按照降水与昼夜分出四块数据
     
-    TA.PFNT.data = TS_F_MDS_1(intersect(TA.NT.yes.num,TA.PF.yes.num));
-    TA.PFnoNT.data = TS_F_MDS_1(intersect(TA.NT.no.num,TA.PF.yes.num));
-    TA.noPFNT.data = TS_F_MDS_1(intersect(TA.NT.yes.num,TA.PF.no.num));
-    TA.noPFnoNT.data = TS_F_MDS_1(intersect(TA.NT.no.num,TA.PF.no.num));
+    TA.PFNT.data = TA_F(intersect(TA.NT.yes.num,TA.PF.yes.num));
+    TA.PFnoNT.data = TA_F(intersect(TA.NT.no.num,TA.PF.yes.num));
+    TA.noPFNT.data = TA_F(intersect(TA.NT.yes.num,TA.PF.no.num));
+    TA.noPFnoNT.data = TA_F(intersect(TA.NT.no.num,TA.PF.no.num));
     
     TA.PFNT.num = intersect(TA.NT.yes.num,TA.PF.yes.num);
     TA.PFnoNT.num = intersect(TA.NT.no.num,TA.PF.yes.num);
