@@ -4,7 +4,7 @@ The files in `.mat` format in the folder `mat` are the processed example data.
 The files in `.xlsx` format in the folder `xls` are the files saving the model summary and parameters.
 The files in `.m` format in the folder `m_file` are the MATLAB program files used in the study.
 
-The users only need to set the paths according to the following `Path setting` and run `xls2mat.m` and `main. m` in turn to finish data preprocessing and curve fitting.
+The users only need to set the paths according to the following **Path setting** and run `xls2mat.m` and `main. m` in turn to finish data preprocessing and curve fitting.
 
 
 
